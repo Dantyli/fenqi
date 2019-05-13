@@ -1,0 +1,49 @@
+/*css reset*/
+@import './var.scss';
+html,body,div,span,ul,li,p,label,input{
+    margin: 0;
+    padding: 0;
+}
+html,body{
+    height: 100%;
+    max-width: 640px;
+    margin: 0 auto;
+}
+li{
+    list-style: none;
+}
+a{
+    text-decoration: none;
+    &:active{
+        text-decoration: none;
+    }
+}
+.btn{
+    height: 36px;
+    line-height: 36px;
+    font-size: 16px;
+    color: #fff;
+    background: $primary;
+    border-radius: 18px;
+    width: 80%;
+    border: none;
+    margin-left:10px 10%;
+    outline: none;
+    &:active{
+      opacity: 0.7;
+    }
+  }
+/*覆盖UI样式*/
+.mt-range .mt-range-runway{
+    border-top-color:$blue !important;
+}
+.mt-range .mt-range-progress{
+  background-color: $primary !important;
+}
+.mint-header{
+    background: #fff;
+    color: #333;
+    border-bottom: 1px solid #eee;
+    height: 45px;
+    font-size: 16px;
+}
