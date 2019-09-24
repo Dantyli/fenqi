@@ -3,11 +3,17 @@
         <common-header title="我的协议" />
         <ul>
             <li>
-                <Cell title="用户注册协议" is-link :to='first' />
+                <Cell title="用户注册服务协议" is-link :to='first' />
             </li>
              <li>
-                <Cell title="信用检测评估服务协议" is-link :to='second' />
+                <Cell title="风险评级报告与代扣协议" is-link :to='second' />
             </li>
+              <li>
+                <Cell title="隐私政策" is-link to='./privacy.html' />
+            </li>
+              <!-- <li>
+                <Cell title="VIP融资咨询服务协议" is-link to='./vip.html' />
+            </li> -->
         </ul>
     </div>    
 </template>

@@ -21,9 +21,11 @@ export default{
             withCredentials: true
            })  
         return instance.post(config.baseURL+'/front/upload',formData,{
-            
+           
         }).then(res=>{
             return res.data;
+        },err=>{
+            //alert(err)
         })
     },
     //身份证信息
@@ -45,5 +47,27 @@ export default{
     //查询用户信息
     getUserInfo(params={}){
         return api.post('/front/userinfo/select',params)
+    },
+     //选择银行卡
+     getPayCard(params){
+        return api.post('/front/bindbankcard/choice',params)
+    },
+    //退款
+    refund(formData){
+        //上传图片
+        const instance=axios.create({
+            withCredentials: true
+           })  
+        return instance.post(config.baseURL+'/front/apply/add',formData,{
+           
+        }).then(res=>{
+            return res.data;
+        },err=>{
+            //alert(err)
+        })
+    },
+    //识别银行卡
+    checkBank(params){
+        return api.post('/front/bindbankcard/bankInfo',params);
     }
 }

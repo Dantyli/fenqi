@@ -148,7 +148,7 @@ export default {
                 userApi.addUserInfo(params).then(res=>{
                     if(res.code=='0'){
                         this.$store.commit('upverify','data')
-                        this.$router.replace('/bindcard')
+                        this.$router.replace('/zichan')
                     }else{
                         toast(res.msg)
                     }

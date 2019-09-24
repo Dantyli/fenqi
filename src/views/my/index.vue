@@ -9,6 +9,11 @@
                 <span v-if="wait>0" class="addedit">完善资料<span class="addnums">{{wait}}</span></span>
                  <img slot="icon" src="../../assets/my_service.png" width="22" height="22">
             </Cell>
+            <div @click="toCardlist">
+            <Cell  title="我的银行卡" is-link>
+                 <img slot="icon" src="../../assets/my_card.png" width="22" height="22">
+            </Cell>
+            </div>
             <div @click="toReport">
             <Cell title="我的报告" is-link>
                 <img slot="icon" src="../../assets/my_report.png" width="22" height="22">
@@ -19,7 +24,7 @@
             </Cell>
         </div>
         <div class="my-list">
-            <Cell to="/kefu" title="客服" is-link>
+            <Cell to="/kefu" title="联系客服" is-link>
                 <img slot="icon" src="../../assets/kefu1.png" width="22" height="22">
             </Cell>
             <Cell to="/setting" title="设置" is-link>
@@ -32,7 +37,13 @@
 import {Cell} from 'mint-ui'
 import {mapGetters} from 'vuex'
 import toast from '@/components/toast'
+import common from '@/api/common'
 export default {
+    data(){
+        return{
+           report:false
+        }
+    },
     components:{
         Cell
     },
@@ -42,12 +53,31 @@ export default {
            return localStorage.getItem('phone').replace(/(\d{3})\d{4}(\d{4})/, '$1****$2')
        }
     },
+    created(){
+        common.getReport().then(res=>{
+            if(res.data){
+                this.report=true
+            }
+        })
+    },
     methods:{
         toReport(){
             if(this.wait==0){
-               this.$router.push('/report')
+                if(this.report){
+                   this.$router.push('/report')
+                }else{
+                    toast('风险评级报告生成失败，请联系客服！')
+                }
+               
             }else{
-                toast('您还没有信用评估报告！')
+                toast('您还没有风险评级报告！')
+            }
+        },
+        toCardlist(){
+            if(this.wait==0){
+                this.$router.push('/cardlist?from=cardlist')
+            }else{
+                toast('请先完善个人信息')
             }
         }
     }

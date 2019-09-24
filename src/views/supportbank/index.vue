@@ -3,7 +3,7 @@
         <common-header title="支持银行" />
         <ul class="bank-list">
             <li v-for="(item,index) in list" :key="index">
-                <img :src="item.picpath" />
+                <img :src="baseIcon+item.picpath" />
                 <div>
                     <p>{{item.name}}</p>
                     <p>{{item.edu}}</p>
@@ -14,17 +14,23 @@
 </template>
 <script>
 import CommonHeader from '@/components/header'
-import bankList from './bank'
-console.log(bankList)
+import config from '@/config'
+import axios from 'axios'
 export default {
     components:{
         CommonHeader
     },
     data(){
         return{
-            list:bankList.list
+            list:[],
+            baseIcon:config.baseIcon
         }
-    }    
+    },
+    created(){
+        axios.get('https://kuaidaozhang.cn/static/bank.json').then(res=>{
+            this.list=res.list
+        })
+    }  
 }
 </script>
 <style lang="scss" scoped>

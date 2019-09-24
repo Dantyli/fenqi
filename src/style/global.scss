@@ -8,6 +8,7 @@ html,body{
     height: 100%;
     max-width: 640px;
     margin: 0 auto;
+    overflow-x: hidden;
 }
 li{
     list-style: none;
@@ -46,4 +47,8 @@ a{
     border-bottom: 1px solid #eee;
     height: 45px;
     font-size: 16px;
+}
+body{
+    padding-bottom: constant(safe-area-inset-bottom);
+    padding-top: constant(safe-area-inset-top);
 }

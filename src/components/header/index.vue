@@ -14,10 +14,23 @@ export default {
             Header,
             Button
         },
-        props:['title'],
+        props:{
+            title:{
+                required:true
+            },
+            isback:{
+                default:true
+            }
+        },
         methods:{
             goBack(){
-                this.$router.go(-1);
+                //console.log(this.isback)
+                if(this.isback!='false'){
+                    this.$router.go(-1);
+                }else{
+                    this.$router.push('/index/orders')
+                }
+                
             }
         }
 }

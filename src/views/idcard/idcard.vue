@@ -7,12 +7,12 @@
        <div class="card">
            <p>
             <label>姓名：</label>
-            <input type="textr" v-model="name" placeholder="请输入姓名" />
+            <input type="text" v-model="name" placeholder="请输入姓名" />
             
         </p>
          <p>
             <label>身份证：</label>
-            <input type="number" v-model="cardno" placeholder="请输入身份证号" />
+            <input type="text" v-model="cardno" placeholder="请输入身份证号" />
             <label>
                 <input type="file" accept="image/*" @change="onFileChange" style="display:none" />
                 <img class="camera"  src="../../assets/camera.png" />

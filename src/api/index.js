@@ -29,6 +29,8 @@ axios.interceptors.request.use((request) => {
     let REQUEST_DATA = request.data
     if(sessionStorage.getItem('openid')){
         REQUEST_DATA={...REQUEST_DATA,'operation_id':sessionStorage.getItem('openid')}
+    }else{
+        REQUEST_DATA={...REQUEST_DATA,'operation_id':''}
     }
     if(localStorage.getItem('token')){
         REQUEST_DATA={...REQUEST_DATA,'token':localStorage.getItem('token')}

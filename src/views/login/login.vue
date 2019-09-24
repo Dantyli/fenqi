@@ -1,6 +1,6 @@
 <template>
     <div class="login">
-         <h2>欢迎来到蓝莓分期！</h2>
+         <h2>欢迎来到嗨借！</h2>
          <div class="label">
               <input placeholder="请输入手机号码" maxlength="11" type="number" v-model.number="phonenum">
          </div>
@@ -11,14 +11,15 @@
              </button>
          </div>
          <button class="btn" @click="login">登录</button>
-         <p class="xieyi">登录即同意《<a :href="hrf">平台用户注册协议</a>》</p>
-
+         <p class="xieyi"><span @click="agre=!agre"><img v-if="agre" src="../../assets/check.png"> <img src="../../assets/uncheck.png" v-else /> 我已阅读并同意</span><span @click="show=true">《<a href="javascript:">平台用户注册服务协议和隐私政策</a>》</span></p>
+         <Popup title="协议"  type='2' @handleClose="close" v-show="show"  />
     </div>
 </template>
 <script>
 import toast from '@/components/toast'
 import userApi from '@/api/userApi'
 import config from '@/config'
+import Popup from '@/components/Popup'
 export default {
     data(){
         return{
@@ -27,13 +28,27 @@ export default {
             code:'',
             countdown:'发送验证码',
             sent:false,
-            hrf:`${config.domain}/register.html`
-
+            hrf:`${config.domain}/register.html`,
+            agre:false,
+            show:true
         }
     },
+    components:{
+        Popup
+    },
     methods:{
+         close(type){
+             if(type=='confirm'){
+                this.agre=true;
+            }
+            this.show=false
+        },
         login(){
             if(/\d{11}/.test(this.phonenum)&&/\d{4}/.test(this.code)){
+                if(!this.agre){
+                    toast('请先阅读并同意协议后操作')
+                    return;
+                }
                 let param={
                     phone:this.phonenum,
                     code:this.code,
@@ -50,10 +65,12 @@ export default {
                                 this.$router.replace('/idcard')
                             }else if(!res.data.data){
                                  this.$router.replace('/myinfo')
-                            }else if(!res.data.bankcard){
+                            }else if(!res.data.property){
+                                 this.$router.replace('/zichan')
+                            }else if(!res.data.bankCard){
                                  this.$router.replace('/bindcard')
                             }else{
-                                 this.$router.replace('/kyc')
+                                 this.$router.replace('/index/home')
                             }
                             
                         }
@@ -70,7 +87,7 @@ export default {
         sendCode(){
             if(this.sent) return;
             if(/\d{11}/.test(this.phonenum)){
-                userApi.sendSms({phone:this.phonenum}).then(res=>{
+                userApi.sendSms({phone:this.phonenum,key:43718,sign:'【嗨借】'}).then(res=>{
                     if(res.code=='0'){
                         toast('验证码发送成功！');
                         this.countdown=60
@@ -132,6 +149,10 @@ export default {
         color: 
         a{
             text-decoration: none;
+        }
+        img{
+            width: 20px;
+            vertical-align: bottom;
         }
     }
     .btn{

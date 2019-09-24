@@ -1,168 +1,97 @@
 <template>
     <div class="report">
-       <common-header title="信用评估报告" />
-       <h3>用户基本信息</h3>
-       <table class="user">
-           <tr>
-               <td>姓名</td>
-               <td>身份证号</td>
-               <td>手机号</td>
-            <tr>
-            <tr>
-                <td>
-                    {{user.name}}
-                </td>
-                <td>
-                    {{user.identity}}
-                </td>
-                <td>
-                    {{user.phone}}
-                </td>
-            </tr>
-       </table>
-       <h3>
-           风险检测结果
-       </h3>
-       <table class="info">
-           <tr>
-              <td>检查项</td> 
-               <td>
-               命中详情
-               </td>
-           </tr>
-           <tr>
-              <td>是否覆盖运营商数据</td> 
-               <td>
-               {{info['mobile_info']['has_carrier_data']?'覆盖':'未覆盖'}}
-               </td>
-           </tr>
-           <tr>
-              <td>是否命中多头数据</td> 
-               <td>
-               {{info['duotou_info']['has_duotou_data']?'覆盖':'未覆盖'}}
-               </td>
-           </tr>
-           <tr>
-              <td>注册机构数</td> 
-               <td>
-               {{info['duotou_info']['org_count']=='-99999'?'0':info['duotou_info']['org_count']}}
-               </td>
-           </tr>
-           <tr>
-              <td>授权注册机构数</td> 
-               <td>
-               {{info['duotou_info']['auth_org_count']=='-99999'?'0':info['duotou_info']['auth_org_count']}}
-               </td>
-           </tr>
-           <tr>
-              <td>运营商授权注册数</td> 
-               <td>
-               {{info['duotou_info']['auth_carrier_org_count']=='-99999'?'0':info['duotou_info']['auth_carrier_org_count']}}
-               </td>
-           </tr>
-           <tr>
-              <td>电商授权注册数</td> 
-               <td>
-               {{info['duotou_info']['auth_taobao_org_count']=='-99999'?'0':info['duotou_info']['auth_taobao_org_count']}}
-               </td>
-           </tr>
-           <tr>
-              <td>网银授权注册数</td> 
-               <td>
-                {{info['duotou_info']['auth_onlinebank_org_count']=='-99999'?'0':info['duotou_info']['auth_onlinebank_org_count']}}
-               </td>
-           </tr>
-           <tr>
-              <td>网贷近90天申请次数</td> 
-               <td>
-                {{info['duotou_info']['cash_loan_90d']=='-99999'?'0':info['duotou_info']['cash_loan_90d']}}
-               </td>
-           </tr>
-           <tr>
-              <td>身份证和姓名是否在关注名单(Ⅱ类)中</td> 
-               <td>
-               {{info['attention_info']['idcard_name_in_attentionlist2']?'在':'不在'}}
-               </td>
-           </tr>
-           <tr>
-              <td>手机号和姓名是否在关注名单(Ⅱ类)中</td> 
-               <td>
-               {{info['attention_info']['mobile_name_in_attentionlist2']?'在':'不在'}}
-               </td>
-           </tr>
-           <tr>
-              <td>关注名单(Ⅱ类)最大逾期天数</td> 
-               <td>
-              {{info['attention_info'].attentionlist2_record_overdue_count=='-99999'?'0':info['attention_info'].attentionlist2_record_overdue_count}}
-               </td>
-           </tr>
-           <tr>
-              <td>关注名单(Ⅱ类)最大逾期金额</td> 
-               <td>
-               {{info['attention_info']['attentionlist2_record_overdue_amount']=='-99999'?'0':info['attention_info']['attentionlist2_record_overdue_amount']}}
-               </td>
-           </tr>
-            <tr>
-              <td>身份证和姓名是否在关注名单(I类)中</td> 
-               <td>
-               {{info['attention_info']['idcard_name_in_attentionlist1']?'在':'不在'}}
-               </td>
-           </tr>
-           <tr>
-              <td>手机号和姓名是否在关注名单(I类)中</td> 
-               <td>
-                {{info['attention_info']['mobile_name_in_attentionlist1']?'在':'不在'}}
-               </td>
-           </tr>
-           <tr>
-              <td>关注名单(I类)累计逾期天数</td> 
-               <td>
-               {{info['attention_info']['attentionlist1_record_overdue_count']=='-99999'?'0':info['attention_info']['attentionlist1_record_overdue_count']}}
-               </td>
-           </tr>
-           <tr>
-              <td>关注名单(I类)最大逾期金额</td> 
-               <td>
-                {{info['attention_info']['attentionlist1_record_overdue_amount']=='-99999'?'0':info['attention_info']['attentionlist1_record_overdue_amount']}}
-               </td>
-           </tr>
-           <tr>
-              <td>是否覆盖芝麻信用</td> 
-               <td>
-               {{info['zmscore_info']['has_zmscore_data']?'覆盖':'未覆盖'}}
-               </td>
-           </tr>
-           <tr>
-              <td>芝麻信用分数</td> 
-               <td>
-               {{info['zmscore_info']['zmscore']=='-99999'?'无':info['zmscore_info']['zmscore']}}
-               </td>
-           </tr>
-           <tr>
-              <td>是否覆盖淘宝</td> 
-               <td>
-               {{info['taobao_info']['has_taobao_data']?'覆盖':'未覆盖'}}
-               </td>
-           </tr>
-           <tr>
-              <td>近三月消费金额</td> 
-               <td>
-               {{info['taobao_info']['consume_money_3m']=='-99999'?'0':info['taobao_info']['consume_money_3m']}}
-               </td>
-           </tr>
-           <tr>
-              <td>近3月虚拟物品消费金额</td> 
-               <td>
-               {{info['taobao_info']['virtual_money_3m']=='-99999'?'0':info['taobao_info']['virtual_money_3m']}}
-               </td>
-           </tr>
-           <tr>
-              <td>近3月虚拟物品消费占消费金额比</td> 
-               <td>
-               {{info['taobao_info']['virtual_money_ratio_3m']=='-99999'?'0':info['taobao_info']['virtual_money_ratio_3m']}}
-               </td>
-           </tr>
-       </table>
+       <common-header title="风险评级报告" />
+       <div class="title">
+           <p>高</p>
+           <p>信用等级</p>
+       </div>
+       <ul class="content">
+           <li>
+               <p class="headline">基本信息</p>
+               <div class="info">
+                  <p><span>姓名</span><span>{{user.name}}</span></p>
+                  <p><span>手机号</span><span>{{user.phone}}</span></p>
+                  <p><span>身份证号</span><span>{{user.identity}}</span></p>
+               </div>
+           </li>
+           <li>
+               <p class="headline">多头</p>
+               <div class="table">
+                   <p class="table-head"><span>规则名称</span><span>命中详情</span><span>是否命中</span></p>
+                   <p class="table-td"><span>是否命中多头数据</span><span>{{info.duotou_info.has_duotou_data|format}}</span><span>{{info.duotou_info.has_duotou_data|formatIs}}</span></p>
+                   <p class="table-td"><span>授权注册机构数</span><span>{{info.duotou_info.org_count|format}}</span><span>{{info.duotou_info.org_count|formatIs}}</span></p>
+                    <p class="table-td"><span>当天贷款申请机构数</span><span>{{info.duotou_info.now_org_count|format}}</span><span>{{info.duotou_info.now_org_count|formatIs}}</span></p>                   
+                     <p class="table-td"><span>网银授权注册机构数</span><span>{{info.duotou_info.auth_onlinebank_org_count|format}}</span><span>{{info.duotou_info.auth_onlinebank_org_count|formatIs}}</span></p>
+                  
+               </div>
+           </li>
+            <li>
+               <p class="headline">关注名单</p>
+               <div class="table">
+                   <p class="table-head"><span>规则名称</span><span>命中详情</span><span>是否命中</span></p>
+                   <p class="table-td"><span>是否在关注名单(Ⅱ类)中</span><span>{{info.attention_info.idcard_name_in_attentionlist2|format}}</span><span>{{info.attention_info.idcard_name_in_attentionlist2|format|formatIs}}</span></p>
+                   <p class="table-td"><span>累计逾期次数</span><span>{{info.attention_info.attentionlist1_record_overdue_count|format}}</span><span>{{info.attention_info.attentionlist1_record_overdue_count|formatIs}}</span></p>
+                   <p class="table-td"><span>最大逾期金额</span><span>{{info.attention_info.attentionlist1_record_overdue_amount|format}}</span><span>{{info.attention_info.attentionlist1_record_overdue_amount|formatIs}}</span></p>
+               </div>
+           </li>
+            <li>
+               <p class="headline">信用卡</p>
+               <div class="table">
+                   <p class="table-head"><span>规则名称</span><span>命中详情</span><span>是否命中</span></p>
+                   <p class="table-td"><span>是否覆盖</span><span>{{info.creditcard_info.has_creditcard_data|format}}</span><span>{{info.creditcard_info.has_creditcard_data|formatIs}}</span></p>
+                   <p class="table-td"><span>更新时间</span><span>{{info.creditcard_info.creditcard_data_updatetime |format}}</span><span>{{info.creditcard_info.creditcard_data_updatetime |formatIs}}</span></p>
+                   <p class="table-td"><span>近12月逾期次数</span><span>{{info.creditcard_info.delaybillnum|format}}</span><span>{{info.creditcard_info.delaybillnum|formatIs}}</span></p>
+                   <p class="table-td"><span>所有银行信用额之和</span><span>{{info.creditcard_info.onlinebank_total_credit_limit |format}}</span><span>{{info.creditcard_info.onlinebank_total_credit_limit |formatIs}}</span></p>
+               </div>
+           </li>
+           <li>
+               <p class="headline">借记卡</p>
+               <div class="table">
+                   <p class="table-head"><span>规则名称</span><span>命中详情</span><span>是否命中</span></p>
+                    <p class="table-td"><span>是否覆盖</span><span>{{info.debitcard_info.has_debitcard_data|format}}</span><span>{{info.debitcard_info.has_debitcard_data|formatIs}}</span></p>
+                   <p class="table-td"><span>更新时间</span><span>{{info.debitcard_info.debitcard_data_updatetime|format}}</span><span>{{info.debitcard_info.debitcard_data_updatetime|formatIs}}</span></p>
+                   <p class="table-td"><span>近12月工资收入</span><span>{{info.debitcard_info.total_salary_income|format}}</span><span>{{info.debitcard_info.total_salary_income|formatIs}}</span></p>
+                   <p class="table-td"><span>近12月贷款收入</span><span>{{info.debitcard_info.total_loan_income|format}}</span><span>{{info.debitcard_info.total_loan_income|formatIs}}</span></p>
+                   <p class="table-td"><span>近12月总支出</span><span>{{info.debitcard_info.total_outcome|format}}</span><span>{{info.debitcard_info.total_outcome|formatIs}}</span></p>
+                   <p class="table-td"><span>近12月消费支出</span><span>{{info.debitcard_info.total_consume_outcome|format}}</span><span>{{info.debitcard_info.total_consume_outcome|formatIs}}</span></p>
+                   <p class="table-td"><span>近12月还贷支出</span><span>{{info.debitcard_info.total_loan_outcome|format}}</span><span>{{info.debitcard_info.total_loan_outcome|formatIs}}</span></p>
+               </div>
+           </li>
+            <li>
+               <p class="headline">芝麻分</p>
+               <div class="table">
+                   <p class="table-head"><span>规则名称</span><span>命中详情</span><span>是否命中</span></p>
+                   <p class="table-td"><span>是否覆盖</span><span>{{info.zmscore_info.has_zmscore_data|format}}</span><span>{{info.zmscore_info.has_zmscore_data|formatIs}}</span></p>
+                   <p class="table-td"><span>更新时间</span><span>{{info.zmscore_info.zmscore_data_updatetime|format}}</span><span>{{info.zmscore_info.zmscore_data_updatetime|formatIs}}</span></p>
+                   <p class="table-td"><span>芝麻分区间</span><span>{{info.zmscore_info.zmscore|format}}</span><span>{{info.zmscore_info.zmscore|formatIs}}</span></p>
+               </div>
+           </li>
+            <li>
+               <p class="headline">淘宝</p>
+               <div class="table">
+                   <p class="table-head"><span>规则名称</span><span>命中详情</span><span>是否命中</span></p>
+                   <p class="table-td"><span>是否覆盖</span><span>{{info.taobao_info.has_taobao_data|format}}</span><span>{{info.taobao_info.has_taobao_data|formatIs}}</span></p>
+                   <p class="table-td"><span>更新时间</span><span>{{info.taobao_info.taobao_data_updatetime|format}}</span><span>{{info.taobao_info.taobao_data_updatetime|formatIs}}</span></p>
+                   <p class="table-td"><span>近3月消费金额</span><span>{{info.taobao_info.consume_money_3m |format}}</span><span>{{info.taobao_info.consume_money_3m|formatIs}}</span></p>
+                   <p class="table-td"><span>近6月消费金额</span><span>{{info.taobao_info.consume_money_6m |format}}</span><span>{{info.taobao_info.consume_money_6m|formatIs}}</span></p>
+                   <p class="table-td"><span>近3月虚拟物品消费金额</span><span>{{info.taobao_info.virtual_money_3m |format}}</span><span>{{info.taobao_info.virtual_money_3m|formatIs}}</span></p>
+                   <p class="table-td"><span>近6月虚拟物品消费金额</span><span>{{info.taobao_info.virtual_money_6m |format}}</span><span>{{info.taobao_info.virtual_money_6m|formatIs}}</span></p>
+               </div>
+           </li>
+            <li>
+               <p class="headline">其他</p>
+               <div class="table">
+                   <p class="table-head"><span>规则名称</span><span>命中详情</span><span>是否命中</span></p>
+                   <p class="table-td"><span>授权注册机构数</span><span>{{info.duotou_info.auth_org_count|format}}</span><span>{{info.duotou_info.auth_org_count|formatIs}}</span></p>
+                   <p class="table-td"><span>当天贷款申请次数</span><span>{{info.duotou_info.now_detail_org_count|format}}</span><span>{{info.duotou_info.now_detail_org_count|formatIs}}</span></p>
+                   <p class="table-td"><span>网贷近7天贷款申请次数</span><span>{{info.duotou_info.cash_loan_7d |format}}</span><span>{{info.duotou_info.cash_loan_7d|formatIs}}</span></p>
+                   <p class="table-td"><span>网贷近30天贷款申请次数</span><span>{{info.duotou_info.cash_loan_30d |format}}</span><span>{{info.duotou_info.cash_loan_30d|formatIs}}</span></p>
+                 </div>
+           </li>
+       </ul>
+       <p class="zhu">
+          注：该数据由魔蝎科技提供，仅供参考
+       </p>
     </div>
 </template>
 <script>
@@ -174,10 +103,22 @@ export default {
     },
     data(){
         return{
-            user:{},
+            user:{
+                name:'--',
+                phone:'----',
+                identity:'----'
+            },
             info:{}
         }
         
+    },
+    filters:{
+        format(e){
+            return e=='-99999'?'0':e
+        },
+        formatIs(e){
+            return e=='-99999'||e=='0'?'否':'是'
+        }
     },
     created(){
         common.getReport().then(res=>{
@@ -193,46 +134,90 @@ export default {
 @import '@/style/var.scss';
 .report{
     @include bkg;
-    h3{
-        color: #fff;
-        background: $primary;
-        line-height: 40px;
+    background: #fff;
+    .title{
+        background: linear-gradient(to right,#55b8c4,#6ed5b9);
+        padding: 20px 0;
         text-align: center;
-        margin: 0;
+        p:nth-of-type(1){
+            font-size: 32px;
+            font-weight: 600;
+            color: #fff;
+        }
+        p:nth-of-type(2){
+            font-size: 16px;
+            color: #fff;
+        }
     }
-    .user{
-        width: 100%;
-        tr{
-            text-align: center;
-            display: flex;
-            width: 100%;
-            justify-content: space-evenly;
-            td{
-                font-size: 12px;
-                width: 33%;
-                border: 1px solid #eee;
+    .content{
+        padding: 0 5px;
+        li{
+            margin-bottom: 15px;
+            .headline{
+                border-left: 3px solid $primary;
+                line-height: 25px;
+                margin: 5px 0;
+                padding-left: 5px;
+            }
+            .info{
+                p{
+                    span{
+                        display: inline-block;
+                        width: 50%;
+                        font-size: 16px;
+                    }
+                    line-height: 30px;
+                    span:nth-of-type(1){
+                        text-align: left;
+                    }
+                    span:nth-of-type(2){
+                        text-align: right;
+                    }
+                }
+            }
+        }
+         .table{
+            border: 1px solid #ddd;
+            &-head{
+                background: #f0f3fc;
+                height: 30px;
+                display: flex;
+                justify-content: space-around;
                 line-height: 30px;
+                span{
+                    line-height: 30px;
+                    display: inline-block;
+                    width: 25%;
+                    text-align: center;
+                }
+                span:nth-of-type(1){
+                    width: 45%;
+                }
+            }
+            &-td{
                 background: #fff;
-                overflow-y:scroll; 
+                height: 30px;
+                display: flex;
+                justify-content: space-around;
+                line-height: 30px;
+                span{
+                    line-height: 30px;
+                     display: inline-block;
+                    width: 25%;
+                    text-align: center;
+                    font-size: 13px;
+                }
+                span:nth-of-type(1){
+                    width: 45%;
+                }
             }
         }
     }
-    .info{
-         width: 100%;
-        tr{
-            text-align: center;
-            display: flex;
-            width: 100%;
-            justify-content: space-evenly;
-            td{
-                font-size: 12px;
-                width: 50%;
-                border: 1px solid #eee;
-                line-height: 30px;
-                background: #fff;
-                overflow-y:scroll; 
-            }
-        }
+    .zhu{
+        text-align: center;
+        font-size: 14px;
+        color: #999;
+        margin: 20px 0;
     }
 
 }

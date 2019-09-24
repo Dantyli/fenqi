@@ -111,12 +111,66 @@ const router= new Router({
     {
       path:'/report',
       component:()=>import('./views/my/report')
+    },
+    {
+      path:'/refund',
+      component:()=>import('./views/refund/refund')
+    },
+    {
+      path:'/f/refund',
+      component:()=>import('./views/refund/refund1.vue')
+    },
+    {
+      path:'/s/refund',
+      component:()=>import('./views/refund/refund2.vue')
+    },
+    {
+      path:'/t/refund',
+      component:()=>import('./views/refund/refund3.vue')
+    },
+    {
+      path:'/success',
+      component:()=>import('./views/success')
+    },
+    {
+      path:'/raiders',
+      component:()=>import('./views/loan/raiders')
+    },{
+      path:'/install',
+      component:()=>import('./views/install')
+    },
+    {
+      path:'/zichan',
+      component:()=>import('./views/zichan')
+    },
+    {
+      path:'/dengji',
+      component:()=>import('./views/zichan/dengji')
+    },
+    {
+      path:'/bz',
+      component:()=>import('./views/bindcard/buzu')
+    },{
+      path:'/log',
+      component:()=>import('./views/refund/log')
+    },
+    {
+      path:'/logd',
+      component:()=>import('./views/refund/logd')
+    },
+    {
+      path:'/frame',
+      component:()=>import('./views/frame/index.vue')
+    },
+    {
+      path:'/refunds',
+      component:()=>import('./views/success/refunds.vue')
     }
   ]
 })
 //全局钩子函数
 router.beforeEach((to,from,next)=>{
-  if(to.path=='/index/home'||to.path=='/login'||localStorage.getItem('token')){
+  if(to.path=='/index/home'||to.path=='/login'||to.path=='/install'||to.path=='/frame'||localStorage.getItem('token')){
      next()
   }else{
      next(`/login?redirect=${to.path}`)

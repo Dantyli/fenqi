@@ -8,7 +8,8 @@ export default new Vuex.Store({
       userInfo:{
         authentication:0, //身份证
         data:0, //个人信息
-        bankCard:0 //银行卡
+        bankCard:0, //银行卡
+        property:0 //资产
       }
   },
   mutations: {
@@ -28,12 +29,15 @@ export default new Vuex.Store({
     //wait 待认证项目数
     wait(state){
       if(!state.userInfo.authentication){
-          return 3
+          return 4
       }else if(!state.userInfo.data){
+            return 3
+      }else if(!state.userInfo.property){
             return 2
       }else if(!state.userInfo.bankCard){
-            return 1
-      }else{
+        return 1
+      }
+      else{
            return 0
       }
     }

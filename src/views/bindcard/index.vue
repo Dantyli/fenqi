@@ -2,12 +2,12 @@
     <div class="bindcard">
         <common-header title="绑定银行卡" />
          <p class="tips">
-           完成绑卡，预计可获得<span>5000元</span>额度
+           完成绑卡，预计可获得<span>6000元</span>额度
          </p>
          <div class="card">
              <p>
                  <label>银行卡：</label>
-                 <input type="number" v-model="cardno" placeholder="请输入银行卡号" />
+                 <input type="number" v-model="cardno" @blur="checkCode" placeholder="请输入银行卡号" />
                  <label>
                      <input type="file" accept="image/*" @change="onFileChange" style="display:none" />
                      <img class="camera"  src="../../assets/camera.png" />
@@ -48,7 +48,8 @@ import toast from '@/components/toast'
 import {Indicator} from 'mint-ui'
 import Util from '@/components/util'
 import userApi from '@/api/userApi'
-import bankList from  '../supportbank/bank'
+import axios from 'axios';
+let bankList={}
 export default {
     components:{
         CommonHeader
@@ -63,7 +64,8 @@ export default {
             name:'--',
             identity:'--',
             bank:'',
-            bankCode:''
+            bankCode:'',
+            redirect:''
         }
     },
     methods:{
@@ -72,18 +74,37 @@ export default {
             if(!/\d{1,38}/.test(this.cardno)||!/\d{11}/.test(this.phone)){
                  toast('银行卡信息填写有误！')
             }else{
-                toast('验证码已发送');
-                this.sent=true;
-                this.countdown=60
-                 this.sent=true
-                 this._timer=setInterval(()=>{
-                     this.countdown--
-                      if(this.countdown==0){
-                          this.countdown='发送验证码'
-                          clearInterval(this._timer);
-                          this.sent=false
-                      } 
-                 },1000) 
+                let params={
+                    identity:this.identity,
+                    name:this.name,
+                    bank_card:this.cardno,
+                    phone:this.phone,
+                    type:1,
+                    bank:this.bank,
+                    bankCode:this.bankCode,
+                    list:bankList
+                }
+                Indicator.open()
+                  userApi.bindCard(params).then(res=>{
+                      Indicator.close()
+                      if(res.code=='0'){
+                          toast('验证码已发送');
+                            this.sent=true;
+                            this.countdown=60
+                            this.sent=true
+                            this._timer=setInterval(()=>{
+                                this.countdown--
+                                if(this.countdown==0){
+                                    this.countdown='发送验证码'
+                                    clearInterval(this._timer);
+                                    this.sent=false
+                                } 
+                            },1000) 
+                      }else{
+                          toast(res.msg)
+                      }
+                  })
+                
             }
         },
         bindcard(){
@@ -98,13 +119,21 @@ export default {
                     type:1,
                     bank:this.bank,
                     bankCode:this.bankCode,
-                    list:bankList
-
+                    list:bankList,
+                    validatecode:this.code
                 }
+                Indicator.open()
                   userApi.bindCard(params).then(res=>{
+                      Indicator.close()
                       if(res.code=='0'){
-                          this.$store.commit('upverify','bankCard')
-                          this.$router.replace('/kyc')
+                          if(this.redirect=='default'){
+                               this.$store.commit('upverify','bankCard')
+                                this.$router.replace('/kyc')
+                          }else{
+                               this.$router.replace(`/${this.redirect}`)
+                          }
+                      }else{
+                          toast(res.msg);
                       }
                   })
             }
@@ -127,11 +156,11 @@ export default {
             }
         },
         upload(formData){
-            console.log(formData)
+            //console.log(formData)
             userApi.upload(formData).then(res=>{
                 if(res.code==0){
                     this.cardno=res.data.number
-                    this.checkBank(this.cardno.substr(0,6))
+                    this.checkCode()
                     Indicator.close()
                 }else{
                     toast('识别失败，请重新上传');
@@ -140,40 +169,33 @@ export default {
             })
         },
         checkBank(val,type=1){
-            new Promise(res=>{
-                 var f=false
+            for(var i=0;i<bankList.list.length;i++){
+                for(var j=0;j<bankList.list[i].reg.length;j++){
+                    if(bankList.list[i].reg[j].test(val)){
+                        this.bank=bankList.list[i].name;
+                        this.bankCode=bankList.list[i].code
+                    }
+                }
+            }
+        },
+        //更换为支付宝接口校验...
+        checkCode(){
+            if(this.cardno.length<6) return;
+           axios.get(`https://ccdcapi.alipay.com/validateAndCacheCardInfo.json?cardNo=${this.cardno}&cardBinCheck=true`).then(res=>{
+               let sup=true
                 for(var i=0;i<bankList.list.length;i++){
-                    if(f){
-                        break;
-                    }
-                    for(var j=0;j<bankList.list[i].reg.length;j++){
-                        if(bankList.list[i].reg[j].test(val)){
-                            console.log(val)
+                        if(bankList.list[i].code==res.bank){
                             this.bank=bankList.list[i].name;
-                            this.bankCode=bankList.list[i].code
-                            f=true;
-                            res({s:true});
-                            j=null
-                            break;
+                            this.bankCode=res.bank
+                            sup=false
                         }
-                    }
-                    if(f){
-                       i=null
-                       break;
-                    }
-                    
-                }
-                if(!f){
-                    res({s:false})
-                }
-                
-            }).then(res=>{
-                if(!res.s){
+                    }  
+                if(sup){
+                    toast('您的银行不在支持银行中，请更换银行卡尝试！',2000)
                     this.bank=''
                     this.bankCode=''
-                    toast('您的银行不在支持银行中，请更换银行卡尝试！')
                 }
-            })
+           })
         }
     },
     created(){
@@ -185,15 +207,27 @@ export default {
                 toast('获取用户信息失败，请重试！')
             }
         })
+        axios.get('https://kuaidaozhang.cn/static/bank.json').then(res=>{
+            bankList=res;
+        })
+        this.redirect=this.$route.query.from||'default'
     },
     beforeDestroy(){
         Indicator.close()
     },
     watch:{
         cardno:function(val,oldVal){
-            if(val.length==6){
-                this.checkBank(val)
-            }else if(val.length<6){
+            // if(val.length==6){
+            //     this.checkBank(val)
+            // }else if(val.length<6){
+            //     this.bank=''
+            //     this.bankCode=''
+            // }else if(val.length>10&&!this.bank){
+            //      this.bank=''
+            //     this.bankCode=''
+            //      toast('您的银行不在支持银行中，请更换银行卡尝试！')
+            // }
+            if(val.length<6){
                 this.bank=''
                 this.bankCode=''
             }
@@ -224,7 +258,7 @@ export default {
                 border-bottom: 1px solid #eee;
                 input{
                     border: none;
-                    width: 200px;
+                    width: 180px;
                     outline: none;
                     height: 30px;
                     font-size: 16px;

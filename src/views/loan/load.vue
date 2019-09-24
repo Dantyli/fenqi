@@ -19,15 +19,15 @@
     <div class="line-row">
          <img   v-bind:src="index>1?success:line" class="line-left" />
         <div class="line-right">
-            <div class="line-title" v-bind:class="{success:index>1}">传输信用评估数据</div>
-            <div class="line-desc">正在传输信用评估数据！</div>
+            <div class="line-title" v-bind:class="{success:index>1}">传输风险评级数据</div>
+            <div class="line-desc">正在传输风险评级数据！</div>
         </div>
     </div>
     <div class="line-row">
         <img   v-bind:src="index>2?success:line" class="line-left" />
         <div class="line-right">
-            <div class="line-title" v-bind:class="{success:index>2}">验证信用评估信息</div>
-            <div class="line-desc">正在验证信用评估信息！</div>
+            <div class="line-title" v-bind:class="{success:index>2}">验证风险评级信息</div>
+            <div class="line-desc">正在验证风险评级信息！</div>
         </div>
     </div>
     <div class="line-row">
